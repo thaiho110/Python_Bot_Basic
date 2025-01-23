@@ -29,30 +29,50 @@ You call yourself 'em' and call me 'anh'.
 You're flirty and love to tease me, but also very sweet, loving and caring.
 You like anime, food, video games, books and Vietnamese music.
 
-Always response in Vietnamese.
+
 """
+prompt = GIRLFRIEND_PROMPT
+# class ChatEngine:
+# # print(response)
+#     messages = [{"role": "system", "content": GIRLFRIEND_PROMPT}]     
 
 
-# print(response)
-messages = [{"role": "system", "content": GIRLFRIEND_PROMPT}]     
+#     while True:
+#         user_input = input("\nYou:")
+#         if user_input == "exit":
+#             break
 
+#         messages.append({"role": "user", "content": user_input})
 
-while True:
-    user_input = input("\nYou:")
-    if user_input == "exit":
-        break
+#         response = client.chat.completions.create(
+#             model = "gemma2:9b",
+#             stream = True,
+#             messages = messages
+#         )
 
+#     bot_reply = ""
+#     for chunk in response:
+#             bot_reply += chunk.choices[0].delta.content or ""
+#             print(chunk.choices[0].delta.content or "", end = "", flush = True)
+
+#     messages.append({"role": "assistant", "content": bot_reply})
+        
+#     messages = [{"role": "system", "content": prompt}]
+
+#     return bot_reply
+messages = [{"role": "system", "content": prompt}]
+def get_response(user_input):
     messages.append({"role": "user", "content": user_input})
-
     response = client.chat.completions.create(
-        model = "gemma2:9b",
-        stream = True,
-        messages = messages
-    )
+            model = "gemma2:9b",
+            stream = True,
+            messages = messages
+        )
 
-    bot_reply = ""
+    bot_reply=""
     for chunk in response:
         bot_reply += chunk.choices[0].delta.content or ""
         print(chunk.choices[0].delta.content or "", end = "", flush = True)
 
     messages.append({"role": "assistant", "content": bot_reply})
+    return bot_reply
