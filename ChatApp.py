@@ -1,8 +1,10 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import *
 import customtkinter as ctk
+from pathlib import Path
 from openai import OpenAI
 import ai_bot as ai
+
 
 #set default apperance
 ctk.set_appearance_mode('dark')
@@ -31,7 +33,7 @@ class ChatApp:
 
         #head label
         head_label = tk.Label(self.window, bg=BG_Light_Gray, fg=Text_Color_Sender, 
-                                text='Welcome', font=(FONT, 18), pady=10)
+                                text=ai.get_bot_name(), font=(FONT, 18), pady=10)
         head_label.place(relwidth=1)
 
         #tiny divider
@@ -50,10 +52,10 @@ class ChatApp:
         bottom_label.place(relwidth=1, rely=0.825)
 
         #message entry box
-        self.msg_entry = tk.Entry(bottom_label, bg=BG_Light_Gray, 
+        self.msg_entry = tk.Entry(bottom_label, border=10, justify= 'left',cursor='xterm' ,bg=BG_Light_Gray, 
                                     fg=Text_Color_Sender, font=(FONT, 14))
         self.msg_entry.grid(row=2, column=0)
-        self.msg_entry.place(relwidth=0.74, relheight=0.06, rely=0.008, relx=0.011)
+        self.msg_entry.place(relwidth= 0.74, relheight=0.06, rely=0.008, relx=0.011)
         self.msg_entry.focus()
         self.msg_entry.bind('<Return>', self._on_enter_pressed)
 
@@ -61,6 +63,8 @@ class ChatApp:
         send_button = tk.Button(bottom_label, text='Send', font=(FONT, 12), 
                                 width=20, bg=BG_Light_Gray, command=lambda: self._on_enter_pressed(None))
         send_button.place(relx=0.77, rely=0.008, relheight=0.06, relwidth=0.22)
+        
+        
 
 
 
@@ -78,8 +82,8 @@ class ChatApp:
         self.text_widget.insert(tk.END, msg_sender)
         self.text_widget.configure(state=tk.DISABLED)
         self.text_widget.see(tk.END)
-
-        msg_bot = f'AI: {ai.get_response(msg)}\n'
+        
+        msg_bot = f'{ai.get_bot_name()}: {ai.get_response(msg)}\n'
         self.text_widget.configure(state=tk.NORMAL)
         self.text_widget.insert(tk.END, msg_bot)
         self.text_widget.configure(state=tk.DISABLED)
